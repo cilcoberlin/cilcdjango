@@ -1,0 +1,28 @@
+
+{% load i18n %}
+
+<script type="text/javascript">
+	var _global_filterURL = "{% url filter-media-library %}",
+	    _global_newGroupURL = "{% url add-media-group %}",
+	    _global_updateFilterURL = "{% url update-filters %}";
+	{% block javascript %}{% endblock %}
+</script>
+
+<div class="media-library {% block extra_classes %}{% endblock %}" id="media-library_{{ library.pk }}">
+
+	<h3 class="title">{% trans "Media Library" %}</h3>
+
+	<fieldset class="media-library-filters">
+		{% include "media_forms/selection_form_filters.html" %}
+	</fieldset>
+
+	<ul class="actions">
+		<li class="action">
+			<a href="{% url load-media-library-add-form %}" class="button minor add-link media-library-add-link">
+				<span class="text">{% trans "add new media" %}</span>
+			</a>
+		</li>
+		{% block actions %}{% endblock %}
+	</ul>
+
+</div>

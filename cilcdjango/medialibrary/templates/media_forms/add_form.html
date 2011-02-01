@@ -1,0 +1,37 @@
+
+{% load i18n %}
+
+<form action="{% url save-media-library-add-form %}" method="post" id="media-library-add-form" enctype="multipart/form-data">
+
+	<p class="status-message" id="add-form-alert"></p>
+
+	<fieldset id="media-fields">
+
+		{{ media_form.field.is_file }}
+		{{ media_form.field.file }}
+		{{ media_form.field.url }}
+		{{ media_form.field.title }}
+
+		{% include "media_forms/add_form_group_selector.html" %}
+
+		<a href="#" id="add-media-group-link" class="button minor add-link"><span class="text">{% trans "add group" %}</span></a>
+
+		<fieldset id="new-media-group-fields">
+			<legend>{% trans "New Group" %}</legend>
+
+			<p class="status-message" id="new-group-alert"></p>
+			{{ group_form.field.name }}
+
+			<input type="button" value="{% trans "Add Group" %}" id="submit-new-group-button" />
+		</fieldset>
+
+		<input type="hidden" name="library" value="{{ library.pk }}" />
+		<input type="hidden" name="library_id" value="{{ library.pk }}" />
+
+	</fieldset>
+
+	<fieldset class="submit-buttons">
+		<input type="submit" value="{% trans "Add File" %}" />
+	</fieldset>
+
+</form>

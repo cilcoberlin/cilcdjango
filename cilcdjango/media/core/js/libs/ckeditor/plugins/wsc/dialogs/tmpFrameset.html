@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<!--
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.html or http://ckeditor.com/license
+-->
+<html>
+<head>
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<script type="text/javascript">
+
+function do_load_script( url )
+{
+	if ( !url )
+		return false ;
+
+	var s = document.create_element( "script" ) ;
+	s.type = "text/javascript" ;
+	s.src = url ;
+	document.get_elements_by_tag_name( "head" )[ 0 ].append_child( s ) ;
+
+	return true ;
+}
+
+var opener;
+function try_load()
+{
+	opener = window.parent;
+
+	// get access to global parameters
+	var o_params = window.opener.old_frameset_page_params;
+
+	// make frameset rows string prepare
+	var s_frameset_rows = ( parse_int( o_params.firstframeh, 10 ) || '30') + ",*," + ( parse_int( o_params.thirdframeh, 10 ) || '150' ) + ',0' ;
+	document.get_element_by_id( 'it_frameset' ).rows = s_frameset_rows ;
+
+	// dynamic including init frames and crossdomain transport code
+	// from config sproxy_js_frameset url
+	var add_script_url = o_params.sproxy_js_frameset ;
+	do_load_script( add_script_url ) ;
+}
+
+	</script>
+</head>
+
+<frameset id="it_frameset" onload="try_load();" border="0" rows="30,*,*,0">
+    <frame scrolling="no" framespacing="0" frameborder="0" noresize="noresize" marginheight="0" marginwidth="2" src="" name="navbar"></frame>
+    <frame scrolling="auto" framespacing="0" frameborder="0" noresize="noresize" marginheight="0" marginwidth="0" src="" name="mid"></frame>
+    <frame scrolling="no" framespacing="0" frameborder="0" noresize="noresize" marginheight="1" marginwidth="1" src="" name="bot"></frame>
+    <frame scrolling="no" framespacing="0" frameborder="0" noresize="noresize" marginheight="1" marginwidth="1" src="" name="spellsuggestall"></frame>
+</frameset>
+</html>

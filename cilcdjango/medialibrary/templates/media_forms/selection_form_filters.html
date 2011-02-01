@@ -1,0 +1,5 @@
+{{ form.group_filter }}
+{{ form.type_filter }}
+{% include "media_forms/selection_form_filter_subtypes.html" %}
+{% include "media_forms/selection_form_filter_items.html" %}
+<input type="hidden" name="library_id" value="{{ library.pk }}" />

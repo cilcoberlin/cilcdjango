@@ -1,0 +1,4 @@
+include pip_requirements.txt
+recursive-include cilcdjango/media *
+recursive-include cilcdjango/languages/data *
+recursive-include cilcdjango/medialibrary/templates *

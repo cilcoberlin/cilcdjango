@@ -1,0 +1,13 @@
+{% extends "media_forms/selection_form.html" %}
+
+{% load i18n %}
+
+{% block javascript %}
+	var _global_mediaMarkupURL = "{% url media-markup %}";
+{% endblock %}
+
+{% block extra_classes %}{% if editor_id %} editor_{{ editor_id }}{% endif %}{% endblock %}
+
+{% block actions %}
+	<li class="action"><a href="#" class="button minor secondary insert-media">{% trans "insert selected media into editor" %}</a></li>
+{% endblock %}
