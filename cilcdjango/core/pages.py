@@ -33,9 +33,9 @@ class DjangoPage(object):
 
 		self.request     = request
 		self._render_args = {}
-		self._configure_page(*args, **kwargs)
+		self.configure_page(*args, **kwargs)
 
-	def _configure_page(self, *args, **kwargs):
+	def configure_page(self, *args, **kwargs):
 		"""This function can be overridden to perform additional setup actions."""
 		pass
 
@@ -43,7 +43,7 @@ class DjangoPage(object):
 		"""Add arguments that are passed to the render_to_response function"""
 		self._render_args.update(render_args)
 
-	def _provide_final_render_args(self):
+	def provide_final_render_args(self):
 		"""Add rendering arguments right before rendering."""
 		return {}
 
@@ -85,7 +85,7 @@ class DjangoPage(object):
 		"""
 
 		#  Assemble CSS body classes and JavaScript and CSS media files
-		self.add_render_args(self._provide_final_render_args())
+		self.add_render_args(self.provide_final_render_args())
 		self.add_render_args({
 			'page_media': self._combine_form_media()
 		})
