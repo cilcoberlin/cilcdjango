@@ -26,15 +26,13 @@ class CILCContext(object):
 	whose keys will be the names of template variables.
 
 	This context also provides a special variable named "JS_GLOBAL_VARIABLES"
-	(the value of which can be changed by overriding the value of
-	`JS_GLOBALS_CONTEXT_NAME`) that contains markup to define JavaScript global
-	variables.
+	that contains markup to define JavaScript global variables.
 
 	Three separate global JavaScript objects are defined that contain settings.
 	The first, `cilc`, acts as a simple namespace for CILC apps. The second,
 	`cilc_settings`, defines URLs and information about the current application.
 	The last, `custom_js_settings` (although the value can be changed if the
-	child class ovverrides the value of `JS_CUSTOM_GLOBALS_OBJECT_NAME`),
+	child class ovverrides the value of `js_globals_object`),
 	contains any variables provided by the child context via an overridden
 	`provide_javascript_globals` method, whose returned dictionary's keys will
 	be the names of global variables available through the `custom_js_settings`
@@ -44,9 +42,9 @@ class CILCContext(object):
 	_JS_GLOBALS_OBJECT_NAME  = "cilc"
 	_JS_SETTINGS_OBJECT_NAME = "cilc_settings"
 	_JS_GLOBALS_URL_VAR_NAME = "urls"
+	_JS_GLOBALS_CONTEXT_NAME = "JS_GLOBAL_VARIABLES"
 
-	JS_GLOBALS_CONTEXT_NAME       = "JS_GLOBAL_VARIABLES"
-	JS_CUSTOM_GLOBALS_OBJECT_NAME = "custom_js_settings"
+	js_globals_object = "custom_js_settings"
 
 	def __init__(self, request):
 		from django.conf import settings
@@ -130,7 +128,7 @@ class CILCContext(object):
 			},
 			{
 				'object':   self._custom_js_vars,
-				'var_name': self.JS_CUSTOM_GLOBALS_OBJECT_NAME
+				'var_name': self.js_globals_object
 			}
 		]
 
@@ -188,7 +186,7 @@ class CILCContext(object):
 
 		This can be overridden by a child context to provide additional
 		JavaScript global variables that will be contained in the
-		`JS_CUSTOM_GLOBALS_OBJECT_NAME` object, which is "custom_js_settings"
+		`js_globals_object` object, which is "custom_js_settings"
 		by default.
 		"""
 		return {}
@@ -214,6 +212,6 @@ class CILCContext(object):
 		#  Add in our JavaScript global variables
 		self._build_javascript_globals()
 		self._custom_js_vars = self.provide_java_script_globals()
-		paths[self.JS_GLOBALS_CONTEXT_NAME] = self._render_java_script_globals()
+		paths[self._JS_GLOBALS_CONTEXT_NAME] = self._render_java_script_globals()
 
 		return paths
