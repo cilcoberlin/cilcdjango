@@ -1,8 +1,8 @@
 
 import cilcdjango.core.settings as _settings
-from cilcdjango.core.url import site_url
 from cilcdjango.core.util import get_app_setting
 
+from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse, NoReverseMatch
 from django.utils.safestring import mark_safe
 
@@ -203,7 +203,7 @@ class CILCContext(object):
 			'MEDIA_URL':        self.app_media_url,
 			'REQUEST_PATH':     self.request.path,
 			'SHARED_MEDIA_URL': self.shared_media_url,
-			'SITE_URL':         site_url()
+			'SITE_URL':         Site.objects.get_current().domain
 		}
 
 		#  Allows child classes to add context variables
