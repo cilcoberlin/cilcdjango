@@ -2,11 +2,11 @@
 from cilcdjango.core.media import make_shared_media_url, make_secure_media_url
 from cilcdjango.core.forms import DjangoForm, DjangoModelForm
 import cilcdjango.core.text
-from cilcdjango.core.util import get_app_setting
+from cilcdjango.core.util import get_app_setting, rfc3339_to_datetime
 
 from django import template
 from django.conf import settings
-from django.template.defaultfilters import stringfilter
+from django.template.defaultfilters import date, stringfilter
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _, ugettext
 
@@ -78,6 +78,21 @@ def highlight(value, arg):
 #-------------------------------------------------------------------------------
 #  Formatting Tags
 #-------------------------------------------------------------------------------
+
+@register.filter
+@stringfilter
+def rfc3339_date(date_string, date_filter):
+	"""
+	A version of Django's `date` filter that works on datetime strings formatted
+	according to the RFC 3339 guidelines and can accept an optional `X`
+	parameter that displays the timezone name as produced by using the `X`
+	parameter in python's strftime function.
+	"""
+	dt = rfc3339_to_datetime(date_string)
+	if dt.tzinfo and 'X' in date_filter:
+		date_filter = date_filter.replace('X', "".join(["\%s" % letter for letter in dt.strftime("%Z")]))
+	formatted = date(dt, date_filter)
+	return formatted
 
 @register.tag
 def form_field(parser, token):

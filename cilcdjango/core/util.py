@@ -3,17 +3,18 @@ from django.conf import settings
 from django.template.defaultfilters import date as django_date
 from django.utils.translation import ugettext_lazy as _
 
+from feedparser import _parse_date as parse_date
+import pytz
+
+import datetime
 import os
 import sys
+import time
 
 _setting_defaults = {
 	'APPLICATION_NAME':      "",
-	'APP_ROOT_FOLDER':       "/",
 	'RTE_CONFIG_FILE':       "",
-	'SERVER_BASE':           None,
-	'SERVER_PORT':           80,
 	'SHARED_MEDIA_URL':      "",
-	'SUPPORTS_HTTPS':        False,
 	'SUPPORT_EMAIL_ADDRESS': "",
 	'SUPPORT_EMAIL_NAME':    ""
 }
@@ -68,6 +69,15 @@ def configure_django_paths(script_path):
 #-------------------------------------------------------------------------------
 #  Date / Time
 #-------------------------------------------------------------------------------
+
+def rfc3339_to_datetime(dt):
+	"""
+	Return the RFC 3339 datetime string in `dt` as timezone-aware Django
+	datetime object.
+	"""
+	utc_dt = pytz.utc.localize(datetime.datetime.fromtimestamp(time.mktime(parse_date(dt))))
+	time_zone = pytz.timezone(settings.TIME_ZONE)
+	return utc_dt.astimezone(time_zone)
 
 def format_date(date_obj):
 	"""
