@@ -1,7 +1,8 @@
 
-from django.db.models import CharField
+from django.db.models import CharField, TextField
 from django.utils.encoding import force_unicode
 
+from cilcdjango.core.fields import RichTextEditorField
 from cilcdjango.core.text import smart_slugify
 
 def _get_field(instance, name):
@@ -123,3 +124,12 @@ class AutoSlugField(CharField):
 
 	def get_internal_type(self):
 		return 'SlugField'
+
+class RichTextField(TextField):
+	"""A text field that can accept HTML-formatted rich text."""
+
+	def formfield(self, **kwargs):
+		"""Provide a rich-text editor for the field."""
+		defaults = {'form_class': RichTextEditorField}
+		defaults.update(**kwargs)
+		return super(RichTextField, self).formfield(**defaults)
