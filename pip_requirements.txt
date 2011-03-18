@@ -2,3 +2,6 @@ sorl-thumbnail==3.2.5
 python-ldap
 simplejson
 lxml
+pytz
+
+http://feedparser.googlecode.com/files/feedparser-5.0.1.tar.gz
