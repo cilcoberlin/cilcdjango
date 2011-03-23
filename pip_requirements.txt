@@ -1,4 +1,4 @@
-sorl-thumbnail==3.2.5
+sorl-thumbnail
 python-ldap
 simplejson
 lxml
