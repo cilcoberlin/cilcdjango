@@ -75,11 +75,12 @@ class CILCContext(object):
 		settings object.
 		"""
 
-		#  If the pattern can be resolved without any args or kwargs, implying
-		#  that it receives its data via POST, add it to our list.
+		#  If the pattern is flagged as an Ajax view and can be successfully
+		#  resolved without any args or kwargs, implying that it receives its
+		#  data via POST or GET, add it to our list.
 		if hasattr(pattern.callback, _settings.AJAX_VIEW_FLAG):
 			try:
-				self._custom_js_vars[self._JS_GLOBALS_URL_VAR_NAME][pattern.name] = reverse(pattern.name)
+				CILCContext._ajax_views[pattern.name] = reverse(pattern.name)
 			except NoReverseMatch:
 				pass
 
@@ -113,8 +114,12 @@ class CILCContext(object):
 			if self._JS_GLOBALS_URL_VAR_NAME not in self._custom_js_vars:
 				self._custom_js_vars[self._JS_GLOBALS_URL_VAR_NAME] = {}
 
-			#  Add any AJAX views to our object
-			self._add_ajax_views_to_java_script(urlpatterns)
+			#  Add the Ajax view name mapping to our context if it has not
+			#  already been built and added by the context
+			if not hasattr(CILCContext, '_ajax_views'):
+				CILCContext._ajax_views = {}
+				self._add_ajax_views_to_java_script(urlpatterns)
+			self._custom_js_vars[self._JS_GLOBALS_URL_VAR_NAME] = CILCContext._ajax_views
 
 		#  A list of JavaScript values and the variable names they should have
 		object_list = [
