@@ -5,7 +5,7 @@ class RendererType(type):
 	def __init__(cls, name, base, attrs):
 		"""Assemble a list of the available renderers."""
 
-		super(RendererType, cls).__init__(cls, name, base, attrs)
+		super(RendererType, cls).__init__(name, base, attrs)
 
 		#  Build a list of all renderers that use this as a base type
 		if not hasattr(cls, 'renderers'):
